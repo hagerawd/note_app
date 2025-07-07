@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:note_app/note_cubit/note_cubit.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
+import 'AddNoteForm.dart';
 import 'CustomButton.dart';
 import 'CustomTextField.dart';
 class AddNoteBottomSheet extends StatelessWidget {
@@ -11,56 +15,21 @@ class AddNoteBottomSheet extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 25),
         child: SingleChildScrollView(
-          child: AddNoteForm(),
+          child: BlocConsumer<NoteCubit,NoteState>(
+              listener:(context,state){
+                if(state is NoteStateFailure){
+                  print("failed  ${state.errMessage}");
+                }
+                if(state is NoteStateSuccess){
+                  Navigator.pop(context);
+                }
+              } ,
+              builder: (context,state){
+              return ModalProgressHUD(
+                  inAsyncCall: state is NoteStateLoading ? true : false,
+              child: AddNoteForm());}
+          ),
         ),
-      ),
-    );
-  }
-}
-class AddNoteForm extends StatefulWidget {
-  const AddNoteForm({
-    super.key,
-  });
-
-  @override
-  State<AddNoteForm> createState() => _AddNoteFormState();
-}
-
-class _AddNoteFormState extends State<AddNoteForm> {
-  GlobalKey<FormState> formKey = GlobalKey();
-  AutovalidateMode autovalidateMode =AutovalidateMode.disabled;
-  String? title,subTitle;
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      autovalidateMode: autovalidateMode,
-      child: Column(
-        children: [
-
-          CustomTextField( hintText: "Title",
-            onSaved: (value){
-            title=value;
-            },),
-          CustomTextField( hintText: "Content",maxLines: 5,
-            onSaved: (value){
-              subTitle=value;
-            },),
-          SizedBox(height: 110,),
-          CustomButton(text: "add",
-          onTap: (){
-            if(formKey.currentState!.validate()){
-              formKey.currentState!.save();
-
-            }else{
-              autovalidateMode=AutovalidateMode.always;
-              setState(() {
-
-              });
-            }
-          },),
-
-        ],
       ),
     );
   }
