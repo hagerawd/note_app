@@ -5,6 +5,7 @@ import 'package:note_app/models/Note_Models.dart';
 part 'note_state.dart';
 class NoteCubit extends Cubit<NoteState>{
   NoteCubit():super(NoteStateInitial());
+  List<NoteModel>? notes;
   addNote(NoteModel note)async{
     emit(NoteStateLoading());
     try {
@@ -18,14 +19,9 @@ class NoteCubit extends Cubit<NoteState>{
 
   }
   fetchAllNotes(){
-    try {
       var notesBox =  Hive.box<NoteModel>(kNotesBox);
-      List<NoteModel> notes =notesBox.values.toList();
-      emit(NoteReadSuccess(notes));
+      notes =notesBox.values.toList();
 
-    }   catch (e) {
-      emit(NoteStateFailure(e.toString()));
-    }
 
   }
 }
