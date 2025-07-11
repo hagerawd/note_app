@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:note_app/constants.dart';
 import 'package:note_app/note_cubit/note_cubit.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-
 import 'AddNoteForm.dart';
-import 'CustomButton.dart';
-import 'CustomTextField.dart';
 class AddNoteBottomSheet extends StatelessWidget {
   const AddNoteBottomSheet({super.key});
 
@@ -21,12 +18,36 @@ class AddNoteBottomSheet extends StatelessWidget {
               print("failed  ${state.errMessage}");
             }
             if (state is NoteStateSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                    backgroundColor: kPrimaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  content: SizedBox(
+                    height: 20,
+                    child: Center(
+                      child: Text(
+                        "Your note has been saved",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+
+              ));
+
+
               BlocProvider.of<NoteCubit>(context).fetchAllNotes();
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 if (Navigator.of(context).canPop()) {
                   Navigator.of(context).pop();
                 }
               });
+
 
             }
           } ,

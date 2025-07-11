@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_app/models/Note_Models.dart';
 import 'package:note_app/note_cubit/note_cubit.dart';
 import 'package:note_app/views/EditNoteBodyView.dart';
+
+import '../../constants.dart';
 class NoteItem extends StatelessWidget {
   const NoteItem({super.key, required this.notes});
 final NoteModel notes;
@@ -32,6 +34,27 @@ final NoteModel notes;
               trailing: IconButton(
                   onPressed: (){
                     notes.delete();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: kPrimaryColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          content: SizedBox(
+                            height: 20,
+                            child: Center(
+                              child: Text(
+                                "The note has been removed",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+
+                        ));
                     BlocProvider.of<NoteCubit>(context).fetchAllNotes();
                   },
                   icon :Icon(Icons.delete_rounded,color: Colors.black,size: 30,)),

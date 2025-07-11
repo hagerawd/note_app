@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_app/models/Note_Models.dart';
 import 'package:note_app/note_cubit/note_cubit.dart';
 
+import '../../constants.dart';
 import 'CustomAppBar.dart';
 import 'CustomButton.dart';
 import 'CustomTextField.dart';
@@ -32,6 +33,27 @@ class _EditNoteBodyState extends State<EditNoteBody> {
                 widget.note.save();
                 BlocProvider.of<NoteCubit>(context).fetchAllNotes();
                 Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: kPrimaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      content: SizedBox(
+                        height: 20,
+                        child: Center(
+                          child: Text(
+                            "Your note has been edited",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+
+                    ));
 
               },),
               SingleChildScrollView(
