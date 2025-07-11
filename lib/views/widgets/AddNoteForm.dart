@@ -5,6 +5,7 @@ import 'package:note_app/note_cubit/note_cubit.dart';
 import 'package:intl/intl.dart';
 import 'CustomButton.dart';
 import 'CustomTextField.dart';
+import 'colors_list_view.dart';
 class AddNoteForm extends StatefulWidget {
   const AddNoteForm({
     super.key,
@@ -34,7 +35,9 @@ class _AddNoteFormState extends State<AddNoteForm> {
             onSaved: (value){
               subTitle=value;
             },),
-          SizedBox(height: 110,),
+          SizedBox(height: 15,),
+          ColorsListView(),
+          SizedBox(height: 15,),
           BlocBuilder<NoteCubit,NoteState>(
             builder: (context,state) {
               return CustomButton(
@@ -56,7 +59,7 @@ class _AddNoteFormState extends State<AddNoteForm> {
                 }
               },);}
           ),
-          SizedBox(height: 25,)
+          SizedBox(height: 45,)
 
         ],
       ),
