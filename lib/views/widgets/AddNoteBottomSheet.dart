@@ -13,12 +13,21 @@ class AddNoteBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: BlocConsumer<NoteCubit,NoteState>(
+          listenWhen: (previous, current) {
+            return previous != current; // فقط نفّذ listener لو الحالة اتغيرت فعلًا
+          },
           listener:(context,state){
             if(state is NoteStateFailure){
               print("failed  ${state.errMessage}");
             }
-            if(state is NoteStateSuccess){
-              Navigator.pop(context);
+            if (state is NoteStateSuccess) {
+              BlocProvider.of<NoteCubit>(context).fetchAllNotes();
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (Navigator.of(context).canPop()) {
+                  Navigator.of(context).pop();
+                }
+              });
+
             }
           } ,
           builder: (context,state){

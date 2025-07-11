@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:note_app/models/Note_Models.dart';
+import 'package:note_app/note_cubit/note_cubit.dart';
 
 import 'CustomAppBar.dart';
 import 'CustomButton.dart';
 import 'CustomTextField.dart';
-class EditNoteBody extends StatelessWidget {
-  const EditNoteBody({super.key});
+class EditNoteBody extends StatefulWidget {
+  const EditNoteBody({super.key, required this.note});
+  final NoteModel note;
 
+  @override
+  State<EditNoteBody> createState() => _EditNoteBodyState();
+}
+
+class _EditNoteBodyState extends State<EditNoteBody> {
+  String? title,subTitle;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -14,15 +24,29 @@ class EditNoteBody extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: 50,),
-              CustomAppBar(text: "Edit Notes",icon: Icons.check),
+              CustomAppBar(text: "Edit Notes",icon: Icons.check,
+              onPressed: (){
+                widget.note.title =title ?? widget.note.title;
+                widget.note.subTitle =subTitle ?? widget.note.subTitle;
+                widget.note.save();
+                BlocProvider.of<NoteCubit>(context).fetchAllNotes();
+                Navigator.pop(context);
+
+              },),
               SingleChildScrollView(
                 child: Column(
                   children: [
                     SizedBox(height: 24,),
-                    CustomTextField( hintText: "Title",),
-                    CustomTextField( hintText: "Content",maxLines: 5,),
-                    SizedBox(height: 430,),
-                    CustomButton(text: "Save",),
+                    CustomTextField( hintText: widget.note.title,
+                    onChanged: (value){
+                      title=value;
+                    },),
+                    CustomTextField( hintText: widget.note.subTitle,maxLines: 5,
+                    onChanged: (value){
+                      subTitle=value;
+                    },),
+
+
                   ],
                 ),
               ),

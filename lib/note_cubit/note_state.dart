@@ -4,6 +4,7 @@ abstract class NoteState{}
 class NoteStateInitial extends NoteState{}
 class NoteStateLoading extends NoteState{}
 class NoteStateSuccess extends NoteState{}
+class NoteSuccess extends NoteState{}
 class NoteStateFailure extends NoteState{
   final errMessage;
 
