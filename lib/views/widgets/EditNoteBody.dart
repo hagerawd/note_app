@@ -6,6 +6,7 @@ import 'package:note_app/note_cubit/note_cubit.dart';
 import 'CustomAppBar.dart';
 import 'CustomButton.dart';
 import 'CustomTextField.dart';
+import 'EditNoteColorList.dart';
 class EditNoteBody extends StatefulWidget {
   const EditNoteBody({super.key, required this.note});
   final NoteModel note;
@@ -45,6 +46,7 @@ class _EditNoteBodyState extends State<EditNoteBody> {
                     onChanged: (value){
                       subTitle=value;
                     },),
+                    EditNoteColorList(note: widget.note ,)
 
 
                   ],
